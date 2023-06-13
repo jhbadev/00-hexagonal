@@ -5,11 +5,15 @@ import validationMiddlewares from "../../middlewares/validation.middlewares";
 import { UserCreateDto } from "../../../application/dtos/user/user.create.dto";
 import { UserUpdateDto } from "../../../application/dtos/user/user.update.dto";
 
+ 
+import { UserInterface } from "../../../domain/repositories/user/userInterfaces";
+import { UserClass } from "../../../domain/repositories/user/userClass";
 
 
+const userInterface: UserInterface = new UserClass();
 const userRouter = Router();
 
-const userController = new UserController(new UserService());
+const userController = new UserController(userInterface);
 
 userRouter.get('/', (req, res) => { userController.getUsers(res) });
 

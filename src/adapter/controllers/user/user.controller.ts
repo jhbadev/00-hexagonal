@@ -3,21 +3,24 @@ import { UserService } from '../../../domain/services/user.service';
 import { UserEntity } from '../../../domain/entity/user.entity';
 
 import { ResponseDto } from '../../../application/dtos/response/response.dto';
+import { UserInterface } from '../../../domain/repositories/user/userInterfaces';
 
 
 export class UserController {
 
 
-    private userService: UserService;
+    private userInterface: UserInterface;
 
-    constructor(userService: UserService) {
-        this.userService = userService;
+
+    constructor(userInterface: UserInterface) {
+
+        this.userInterface = userInterface;
     }
 
 
     async getUsers(res: Response) {
 
-        const user: UserEntity[] = await this.userService.getUserAll()
+        const user: UserEntity[] = await this.userInterface.igetUser();
 
         // console.log(user);
         if (user.length != 0) {
@@ -40,7 +43,7 @@ export class UserController {
 
         const userCreateDto: UserEntity = req.body;
 
-        const user: ResponseDto<UserEntity> = await this.userService.postUser(userCreateDto)
+        const user: ResponseDto<UserEntity> = await this.userInterface.iaddUser(userCreateDto)
 
         // console.log(user);
 
@@ -56,7 +59,7 @@ export class UserController {
 
         const parsedUserId: number = parseInt(id, 10);
 
-        const user: ResponseDto<UserEntity> = await this.userService.delUser(parsedUserId);
+        const user: ResponseDto<UserEntity> = await this.userInterface.idelUser(parsedUserId);
 
         return res.status(user.code).json({
             data: user
@@ -74,7 +77,7 @@ export class UserController {
 
         const userUpdate = req.body;
 
-        const user: ResponseDto<UserEntity> = await this.userService.putUser(parsedUserId, userUpdate);
+        const user: ResponseDto<UserEntity> = await this.userInterface.iputUser(parsedUserId, userUpdate);
 
         return res.status(user.code).json({
             data: user

@@ -52,7 +52,7 @@ export class UserRepository implements IUserRepositoy {
     async putUser(userId: number, userUpdateDto: UserUpdateDto): Promise<ResponseDto<UserEntity>> {
 
         let userEntity: UserEntity = new UserEntity();
-   
+
         userEntity.lastname = userUpdateDto.lastname;
         userEntity.name = userUpdateDto.name;
         userEntity.rut = userUpdateDto.rut;
@@ -60,11 +60,11 @@ export class UserRepository implements IUserRepositoy {
         try {
 
             userEntity = await this.prisma.user.update({
-                where: {id: userId},
+                where: { id: userId },
                 data: userEntity
             });
 
-            const response = new ResponseDto(200, `update id ${userId}`, userEntity); 
+            const response = new ResponseDto(200, `update id ${userId}`, userEntity);
             return response;
 
         } catch (error: any) {
